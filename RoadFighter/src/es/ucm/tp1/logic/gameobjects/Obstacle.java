@@ -2,12 +2,12 @@ package es.ucm.tp1.logic.gameobjects;
 
 import es.ucm.tp1.logic.Game;
 
-//Comportamiento: No se mueve. El coche muere cuando choca contra Èl.
+//Comportamiento: No se mueve. El coche muere cuando choca contra √©l.
 //Resistencia: 1 punto de resistencia 
 
 public class Obstacle {
 	
-	static int obstacleCounter = 0; //La contabilizaciÛn de cu·ntos obst·culos/coins hay se realizar· desde la propia clase Coin o Obstacle utilizando atributos est·ticos
+	static int obstacleCounter = 0; //La contabilizaci√≥n de cu√°ntos obst√°culos/coins hay se realizar√° desde la propia clase Coin o Obstacle utilizando atributos est√°ticos
 	private int x, y, vida;
 	private static final String SYMBOL = "‚ñë";
 	Game game;

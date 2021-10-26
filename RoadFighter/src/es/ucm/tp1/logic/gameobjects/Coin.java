@@ -4,7 +4,7 @@ public class Coin {
 	
 	static int  coinsCounter = 0;
 	private int x, y, vida;
-	private static final String SYMBOL = "¢";
+	private static final String SYMBOL = "Â¢";
 	
 	public Coin(int x, int y, int vida) {
 		coinsCounter++;
@@ -28,17 +28,17 @@ public class Coin {
 		return coinsCounter;
 	}
 	
+	public int getCoinVida() {
+		return this.vida;
+	}
+	
 	public String toString() {
 		String salida = "";
 		if(this.vida > 0) {
 			salida = SYMBOL;
 		}
 		return salida;
-	}
-	public int getCoinVida() {
-		return this.vida;
-	}
-	
+	}	
 	
 	public void reset() {
 		coinsCounter = 0;

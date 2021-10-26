@@ -4,11 +4,11 @@ public class ObstacleList {
 	
 	private Obstacle[] obsList;
 	private int numElem;
-	private int tamaño;
+	private int tam;
 	
-	public ObstacleList(int tamaño) {
-		this.tamaño = tamaño;
-		obsList =  new Obstacle[tamaño];
+	public ObstacleList(int tam) {
+		this.tam = tam;
+		obsList =  new Obstacle[tam];
 		this.numElem=0;
 	}
 	
@@ -50,7 +50,7 @@ public class ObstacleList {
 	
 	//update de ayuda para los que van retrasados
 	public void removeDead(){
-		Obstacle[] list2 = new Obstacle[tamaño];
+		Obstacle[] list2 = new Obstacle[tam];
 		int counter = 0;
 		
 		for(int i = 0; i < numElem; i++) {
@@ -64,15 +64,19 @@ public class ObstacleList {
 		this.numElem = counter;
 	}
 	
-	public boolean CollideInPos(int x, int y){
-		boolean a = false;
+	public void CollideInPos(int x, int y){ //pasar  + adelante a bool
 		for(int i = 0; i < numElem; i++) {
 			if(obsList[i].isInPosition(x, y)) {
 				obsList[i].receiveCollision() ;
 				this.numElem--;
-				a = true;
 			}
 		}
-		return a;
+	}
+	
+	public int getNume() {
+		return numElem;
+	}
+	public String getSymbol() {
+		return obsList[0].toString();
 	}
 }

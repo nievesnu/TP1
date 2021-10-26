@@ -1,5 +1,6 @@
 package es.ucm.tp1.control;
 
+//import java.util.Random;
 import java.util.Scanner;
 
 import es.ucm.tp1.logic.Game;
@@ -36,9 +37,10 @@ public class Controller {
 	private Scanner scanner;
 	private GamePrinter printer;
 	
-	public Controller(Game game, Scanner scanner) {
+	public Controller(Game game, Scanner scanner, GamePrinter printer) {
 		this.game = game;
 		this.scanner = scanner;
+		this.printer = printer;
 	}
 
 	public void printGame() {
@@ -62,20 +64,12 @@ public class Controller {
 		boolean refreshDisplay = true;
     	
 		while (!game.isFinished()){ 	
-			if (refreshDisplay) printGame();
-			
-		/*UPDATE GAME*/
-    	refreshDisplay = false;
-       	
-    	//System.out.print(printer); 	
-    	//String[] cmdTokens = scanner.nextLine().toLowerCase().split(" ");
-    	//String cmd = cmdTokens[0];
-    	
-    	System.out.println(PROMPT);
-    	String line = scanner.nextLine();
-    	String[] words = line.toLowerCase().trim().split("\\s+");
-    	System.out.println("(DEBUG) Executing: " + line);
-    		
+			if (refreshDisplay) printGame(); 
+			System.out.println(PROMPT);
+			String line = scanner.nextLine();
+			String[] words = line.toLowerCase().trim().split("\\s+");
+			System.out.println("(DEBUG) Executing: " + line);
+		      
     		if(words.length== 0) {
     			System.out.println(UNKNOWN_COMMAND_MSG);
     			System.out.print("Command > ");
@@ -94,21 +88,21 @@ public class Controller {
     			break;
     			case "n":
     			case "none":
-    			case" ":
+    			case"":
     				game.update();
     				refreshDisplay = true;
     			break;
     			case "q":
-    			case "up":
+    			
     				game.goUp();
     				game.update();
     				refreshDisplay = true;
     			break;
     			case "a":
-    			case "down":
+    			
     				game.goDown();
     				game.update();
-    				refreshDisplay = false;
+    				refreshDisplay = true;
     			break;
     			case "e":
     			case "exit":
@@ -119,18 +113,19 @@ public class Controller {
     			case "r":
     			case "reset":    				
     				System.out.println(game);
+    				game.reset();
     				refreshDisplay = true;  
     			break;
     			case "t":
     			case "test":
-    	    		
+    				
+    	    		game.toggleTest();
     				System.out.println(game);
     				refreshDisplay = true;
     			break;
     			}
     		}
     	};
-    	
     	System.out.print(printer);
-	}
+   	}
 }

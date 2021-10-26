@@ -53,7 +53,7 @@ public class SuperCars {
 					if( Level.TEST.equals(level))
 						game.toggleTest();
 					
-					Controller controller = new Controller(game, new Scanner(System.in));
+					Controller controller = new Controller(game, new Scanner(System.in), game.getPrinter());
 					controller.run();
 				} catch (NumberFormatException nfe) {
 					System.out.println(SEED_IS_NUMBER_MSNG);

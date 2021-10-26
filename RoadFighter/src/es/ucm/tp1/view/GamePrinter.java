@@ -6,7 +6,7 @@ import es.ucm.tp1.utils.StringUtils;
 public class GamePrinter {
 
 	private static final String SPACE = " ";
-	private static final String ROAD_BORDER_PATTERN = "�?";
+	private static final String ROAD_BORDER_PATTERN = "═";
 	private static final String LANE_DELIMITER_PATTERN = "─";
 	private static final int CELL_SIZE = 7;
 	private static final int MARGIN_SIZE = 2;
@@ -41,10 +41,10 @@ public class GamePrinter {
 
 		for(int i = 0; i<numRows;i++){
 			for(int j = 0;j<numCols;j++){
-				board[i][j] = game.getPositiontoString(i,j + game.getPlayer().getY());
+				board[i][j] = game.getPositiontoString(i,j);
 			}
 		}
-		
+		board[game.getPlayer().getX()][0] = game.getPlayer().toString();
 	}
 
 	@Override

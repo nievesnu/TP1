@@ -28,14 +28,13 @@ public class CoinList {
 	}
 	
 	public Coin getObjectInPos(int x, int y) {
-		
+		Coin moneda = null;
 		for(int i = 0; i < numElements; i++) {
 			if(listCoins[i].isInPosition(x, y)) {
-				return listCoins[i];
+				moneda = listCoins[i];
 			}
 		}
-		return null;
-		
+		return moneda;
 	}
 
 	
@@ -67,18 +66,21 @@ public class CoinList {
 	}
 	
 	
-	public boolean CollideInPos(int x, int y) {
-		boolean a = false;
+	public void CollideInPos(int x, int y) {
 		for(int i = 0; i < numElements; i++) {
 			if(listCoins[i].isInPosition(x, y)) {
 				listCoins[i].receiveCollision();
 				this.numElements--;
-				a = true;
 			}
 		}
-	return a;	
 	}
 	
+	public int getNume() {
+		return numElements;
+	}
+	public String getSymbol() {
+		return listCoins[0].toString();
+	}
 	
 	/*
 	 * �?� update() de la clase CoinList

@@ -3,10 +3,15 @@ package es.ucm.tp1.logic;
 import java.util.Random;
 
 import es.ucm.tp1.control.Level;
+
 import es.ucm.tp1.logic.gameobjects.Coin;
 import es.ucm.tp1.logic.gameobjects.CoinList;
 import es.ucm.tp1.logic.gameobjects.Obstacle;
 import es.ucm.tp1.logic.gameobjects.ObstacleList;
+
+//import es.ucm.tp1.logic.gameobjects.Objects
+//import es.ucm.tp1.logic.gameobjects.ObjectList
+
 import es.ucm.tp1.logic.gameobjects.Player;
 import es.ucm.tp1.view.GamePrinter;
 
@@ -19,7 +24,6 @@ public class Game {
 	private ObstacleList oList;
 	private long seed;
 	private int cycles;
-	private boolean exit;
 	private GamePrinter printer;
 	private int x;
 	private int y;
@@ -35,14 +39,13 @@ public class Game {
 		  this.seed = seed;
 		  this.level = level;
 		  this.testMode = testMode; 
-		 // this.printer = new GamePrinter(this, level.getVisibility(), level.getWidth() );
-		  initGame();
-		
+		  this.printer = new GamePrinter(this, level.getVisibility(), level.getWidth() );
+		  initGame();		
 	}
 	
 	public void initGame() {
 		
-		this.x = this.level.getLenght();
+		this.x = y;
 		this.y = this.level.getWidth();
 		this.cycles = 0;
 		rand = new Random(seed);
@@ -52,11 +55,12 @@ public class Game {
 		oList = new ObstacleList(level.getLenght() - level.getVisibility() /2);
 		
 		for(int i = (level.getVisibility() /2); i < level.getLenght(); i++){
-			tryToAddObstacle(x, getRandomLine(), level.getObstacleFrequency());
-			tryToAddCoins(x, getRandomLine(), level.getCoinFrequency());
+			//tryToAddObject(x, getRandomLine(), level.getObstacleFrequency());
+			
+			tryToAddObstacle(getRandomLine(), i, level.getObstacleFrequency());
+			tryToAddCoins(getRandomLine(), i, level.getCoinFrequency());
 		}
 
-		printer = new GamePrinter(this, level.getVisibility(), getRoadWidth());
 	}
 	
  	public int getX (Game game) {
@@ -79,23 +83,54 @@ public class Game {
 
 	//COMANDOS:
 	public boolean goUp() {
-		boolean ok =false;
-		if(player.getY() <this.y-2) { //si no es menos dos es menos uno 
+		boolean ok = false;
+		if(player.getX() - 1 >= 0) {
 			player.playerUp();
+			ok = true;
+		}
+		return ok;		
+	}
+	
+	public boolean goDown() {
+		boolean ok =false;
+		if(level.getWidth() - player.getX() > 0 ) {  
+			player.playerDown();
 			ok = true;
 		}
 		
 		return ok;		
 	}
 	
-	public boolean goDown() {
-		boolean ok =false;
-		if(player.getY() > 0 ) {  
-			player.playerDown();
-			ok = true;
+	public void updateClist() {
+		
+		if (!cList.isPosEmpty(this.x, this.y) ) {
+			cList.CollideInPos(this.x, this.y);
+			player.sumar();
+		}
+	}
+	
+	public void updateOlist() { //acabar
+		if(!oList.isPosEmpty(this.x, this.y)) {
+			oList.CollideInPos(this.x, this.y); 
+			
 		}
 		
-		return ok;		
+	}
+		
+	public CoinList getcList() {
+		return cList;
+	}
+
+	public void setcList(CoinList cList) {
+		this.cList = cList;
+	}
+
+	public ObstacleList getoList() {
+		return oList;
+	}
+
+	public void setoList(ObstacleList oList) {
+		this.oList = oList;
 	}
 
 	//RESET 
@@ -103,62 +138,65 @@ public class Game {
 		initGame();
 	}			
 	private int getRandomLine(){
-		return (int) rand.nextDouble()*level.getWidth();
+		return (int) (rand.nextDouble()*level.getWidth());
 	}
-	public int getRandomNumber() {
-		return (int) rand.nextDouble();
+	public double getRandomNumber() {
+		return rand.nextDouble();
 	}
-	private int getRoadWidth() {
+	
+	/*private int getRoadWidth() {
 		
 		return level.getWidth();
-	}
-
+	}*/
+	
+	
 	//UPDATE 
 	public void update() {
 	 player.update();
+	 this.updateClist();
+	 this.updateOlist();
 	 cList.removeDead();
 	 oList.removeDead();
 	 this.cycles++;
+	 this.toString();
 	}
-
-	//OBJETIVOS -> FUNCION Y VER LO QUE HAY -> IR PROBANDO comentando codigo
-	//aaÃ±adir obs y coins +player
-	//aparezcan en la carretera -> imprimir y se vea
-	//usar comando up y down -> comprobar que funciona
-	//comando avanzar
-	//el coche empieza en pos x=0 y segun avanza se muestra (el player) la ventanaa a partir de la pos del player _visibility_
-	//probar mas comandos y al final el rst
+	
+	public boolean emptyPos(int x, int y) {
+		boolean empty = false;
+			if(oList.isPosEmpty(x, y) || cList.isPosEmpty(x, y) ) {
+					empty = true;
+				}
+		return empty;
+	}
 	
 	public void tryToAddObstacle(int x, int y, double frequency) {
 		if	(getRandomNumber() < frequency){
 			
-			if(oList.isPosEmpty(x, y)) {
+			if(this.emptyPos(x, y)) {
 				oList.add(new Obstacle(x, y, 1));
 			}
 		}	
 	}	
+	
 	public void tryToAddCoins(int x, int y, double frequency) {
 		if	(getRandomNumber() < frequency){
 			
-			if(cList.isPosEmpty(x, y)) {
+			if(this.emptyPos(x, y)) {
 				cList.add(new Coin(x, y,1));
 			}
 		}
-	}	
+	}
 	
 	public String getPositiontoString( int x, int y) {	//comprueba la pos del player y los objects y coins para printear
 		
 		String str = " ";
-		int relativeX =  player.getX() + level.getVisibility();
+		int relativeY =  player.getY() + y;
 		
-		if(player.isInPosition(x,y)){
-			str = player.toString();
+		if(cList.isInPos(x, relativeY)){
+		    str = cList.getSymbol();
 		}
-		else if(cList.isInPos(relativeX,y)){
-		    str = cList.toString();
-		}
-		else if(oList.isInPos(relativeX,y)){
-		    str = oList.toString();
+		else if(oList.isInPos(x, relativeY)){
+		    str = oList.getSymbol();
 		}
 		return str;
 	}
@@ -171,19 +209,13 @@ public class Game {
 	public String getGameStatus() {
 		
 		StringBuilder str = new StringBuilder();
-		String stc = "Command  >";
-		str.append(stc);		
-		str.append("[DEBUG] Executing: "   ); //como concha le a;ado el ult command
-		str.append("Distance : " + (this.getX(this) - level.getLenght()));
-		str.append("Coins : " + player.getCoins() );
-		str.append("Cicle : " + this.getCycles());
-		str.append("Total Obstacles : " + this.getoList() );
-		str.append("Total Coins : " + this.getcList() );
-		str.append("Ellapsed Time : " + (System.currentTimeMillis() - initialTime)); //wtf hago;
-		str.append("Level : " + this.getLevel());
-		str.append("Seed : " + this.getSeed());
-		str.append("â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?â•?");
-		
+		str.append("\nDistance : " + (level.getLenght() - player.getY()));
+		str.append("\nCoins : " + player.getCoins() );
+		str.append("\nCicle : " + cycles);
+		str.append("\nTotal Obstacles : " + oList.getNume());
+		str.append("\nTotal Coins : " + cList.getNume() );
+		str.append("\nEllapsed Time : " + ((System.currentTimeMillis() - initialTime)/1000)); //wtf hago;
+			
 		return str.toString();
 	}
 
@@ -201,74 +233,30 @@ public class Game {
 		return level;
 	}
 
-	public void setLevel(Level level) {
-		this.level = level;
-	}
-
 	public Random getRand() {
 		return rand;
-	}
-
-	public void setRand(Random rand) {
-		this.rand = rand;
 	}
 
 	public Player getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-
-	public CoinList getcList() {
-		return cList;
-	}
-
-	public void setcList(CoinList cList) {
-		this.cList = cList;
-	}
-
-	public ObstacleList getoList() {
-		return oList;
-	}
-
-	public void setoList(ObstacleList oList) {
-		this.oList = oList;
-	}
-
 	public long getSeed() {
 		return seed;
-	}
-
-	public void setSeed(long seed) {
-		this.seed = seed;
 	}
 
 	public int getCycles() {
 		return cycles;
 	}
 
-	public void setCycles(int cycles) {
-		this.cycles = cycles;
-	}
-
 	public boolean isExit() {
-		return exit;
-	}
-
-	public void setExit(boolean exit) {
-		this.exit = exit;
+		return true;
 	}
 
 	public GamePrinter getPrinter() {
 		return printer;
 	}
-
-	public void setPrinter(GamePrinter printer) {
-		this.printer = printer;
-	}
-
+	
 	public boolean isTestMode() {
 		return testMode;
 	}
@@ -278,8 +266,15 @@ public class Game {
 	}
 	
 	public void toggleTest() {
-		
-		
+	boolean mode = false;
+	
+		if(!isTestMode()){
+			mode=true;
+			setTestMode(mode);
+			this.level = Level.TEST;
+			this.initialTime = 0;
+			initGame();
+		}
 	}
 }
 
