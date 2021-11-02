@@ -67,7 +67,7 @@ public class CoinList {
 		for(int i = 0; i < numElements; i++) {
 			if(listCoins[i].isInPosition(x, y)) {
 				listCoins[i].receiveCollision();
-				this.numElements--;
+				//this.numElements--;
 			}
 		}
 	}

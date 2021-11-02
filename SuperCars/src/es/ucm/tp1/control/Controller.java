@@ -62,8 +62,9 @@ public class Controller {
 	public void run() {
 
 		boolean refreshDisplay = true;
+		boolean out = false;
     	
-		while (!game.isFinished()){ 	
+		while (!game.isFinished() && !out){ 	
 			if (refreshDisplay) printGame(); 
 			System.out.println(PROMPT);
 			String line = scanner.nextLine();
@@ -106,9 +107,8 @@ public class Controller {
     			break;
     			case "e":
     			case "exit":
-    				System.out.println("Good Bye.");
-    				game.isFinished();
-    				System.out.println("[GAME OVER]"+ game.getEndGameMessage());
+    				out = true;
+    				//System.out.println("Good Bye.");
     			break;
     			case "r":
     			case "reset":    				
@@ -118,14 +118,14 @@ public class Controller {
     			break;
     			case "t":
     			case "test":
-    				
     	    		game.toggleTest();
     				System.out.println(game);
     				refreshDisplay = true;
     			break;
     			}
     		}
-    	};
+		}
     	System.out.print(printer);
+    	System.out.println("[GAME OVER]"+ game.getEndGameMessage(out));
    	}
 }

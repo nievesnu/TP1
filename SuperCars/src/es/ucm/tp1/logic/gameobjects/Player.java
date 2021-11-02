@@ -16,8 +16,8 @@ public class Player {
 	private Game game; 
 	
 	public Player (Game game, int x, int y, int coins) {
-		this.x = 1;
-		this.y = 0;
+		this.x = x;
+		this.y = y;
 		this.coins = coins;
 		this.crashed = false;
 		this.game = game;

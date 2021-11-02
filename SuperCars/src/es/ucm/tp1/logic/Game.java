@@ -25,31 +25,28 @@ public class Game {
 	private long seed;
 	private int cycles;
 	private GamePrinter printer;
-	private int x;
-	private int y;
-	private long initialTime = System.currentTimeMillis();
+	private boolean testMode; //test modo
+	//private int x;
+	//private int y;
+	private long initialTime;
 	
-
-	private boolean testMode;
+	
 	//instancias
 	
 	public Game (long seed, Level level, boolean testMode) {
-		
-		  this.cycles = 0;
 		  this.seed = seed;
 		  this.level = level;
-		  this.testMode = testMode; 
 		  this.printer = new GamePrinter(this, level.getVisibility(), level.getWidth() );
 		  initGame();		
 	}
 	
 	public void initGame() {
 		
-		this.x = y;
-		this.y = this.level.getWidth();
 		this.cycles = 0;
+		this.initialTime = System.currentTimeMillis();
 		rand = new Random(seed);
-		player = new Player(this, x, y, 0);
+		player = new Player(this, level.getWidth()/2, 0, 0);
+		testMode = false;
 				
 		cList = new CoinList(level.getLenght() - level.getVisibility() /2);
 		oList = new ObstacleList(level.getLenght() - level.getVisibility() /2);
@@ -63,19 +60,9 @@ public class Game {
 
 	}
 	
- 	public int getX (Game game) {
-		
-		return x;
-	}
-	
-	public int getY (Game game) {
-
-		return y;
-	}
-	
 	public boolean isFinished() {
 		boolean fin = false;
-		if(player.isCrashed() || player.getX() == this.x - 1) { /*si el coche crashed aka dead || */
+		if(player.isCrashed() || player.getX() == level.getLenght()) { /*si el coche crashed aka dead || */
 			fin = true;
 		}
 		return fin;
@@ -93,7 +80,7 @@ public class Game {
 	
 	public boolean goDown() {
 		boolean ok =false;
-		if(level.getWidth() - player.getX() > 0 ) {  
+		if(level.getWidth() - 1 > player.getX() ) {  
 			player.playerDown();
 			ok = true;
 		}
@@ -102,27 +89,17 @@ public class Game {
 	}
 	
 	public void updateClist() {
-		
-		if (!cList.isPosEmpty(this.x, this.y) ) {
-			cList.CollideInPos(this.x, this.y);
+		if (!cList.isPosEmpty(player.getX(), player.getY()) ) {
+			cList.CollideInPos(player.getX(), player.getY());
 			player.sumar();
 		}
 	}
 	
 	public void updateOlist() { //acabar
-		if(!oList.isPosEmpty(this.x, this.y)) {
-			oList.CollideInPos(this.x, this.y); 
-			
-		}
-		
-	}
-		
-	public CoinList getcList() {
-		return cList;
-	}
-
-	public ObstacleList getoList() {
-		return oList;
+		if(!oList.isPosEmpty(player.getX(), player.getY())) {
+			oList.CollideInPos(player.getX(), player.getY()); 
+			player.crash();
+		}		
 	}
 	
 	//RESET 
@@ -207,14 +184,17 @@ public class Game {
 		str.append("\nCicle : " + cycles);
 		str.append("\nTotal Obstacles : " + oList.getNume());
 		str.append("\nTotal Coins : " + cList.getNume() );
-		str.append("\nEllapsed Time : " + ((System.currentTimeMillis() - initialTime)/1000)); //wtf hago;
-			
+		if(!this.isTestMode()) {
+			str.append("\nEllapsed Time : " + ((System.currentTimeMillis() - initialTime)/1000)); //wtf hago;
+		}
 		return str.toString();
 	}
 
-	public String getEndGameMessage() {
+	public String getEndGameMessage(boolean out) {
 		String end = " ";
-		if(!player.isCrashed()) { //ha ganado
+		if(out){
+			end = "Player exit!";
+		}else if(!player.isCrashed()) { //ha ganado
 			end = " Player wins!" + " New record!: " + System.currentTimeMillis() + " s" ;		
 		}else {
 			end = " Player crashed!\r\n";
@@ -254,21 +234,11 @@ public class Game {
 		return testMode;
 	}
 
-	public void setTestMode(boolean testMode) {
+	/*public void setTestMode(boolean testMode) {
 		this.testMode = testMode;
-	}
+	}*/
 	
 	public void toggleTest() {
-	boolean mode = false;
-	
-		if(!isTestMode()){
-			mode=true;
-			setTestMode(mode);
-			this.level = Level.TEST;
-			this.initialTime = 0;
-			initGame();
-		}
+		isTestMode();
 	}
 }
-
-	

@@ -2,7 +2,7 @@ package es.ucm.tp1.logic.gameobjects;
 
 public class Coin {
 	
-	static int  coinsCounter = 0;
+	private static int  coinsCounter = 0;
 	private int x, y, vida;
 	private static final String SYMBOL = "¢";
 	

@@ -47,6 +47,7 @@ public class ObstacleList {
 		}
 		return s;	
 	}
+	
 	public void removeDead(){
 		Obstacle[] list2 = new Obstacle[tam];
 		int counter = 0;
