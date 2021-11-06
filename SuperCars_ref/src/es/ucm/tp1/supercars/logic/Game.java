@@ -5,6 +5,8 @@ import java.util.Random;
 import es.ucm.tp1.supercars.control.Level;
 import es.ucm.tp1.supercars.logic.gameobjects.Coin;
 import es.ucm.tp1.supercars.logic.gameobjects.CoinList;
+import es.ucm.tp1.supercars.logic.gameobjects.GameObject;
+import es.ucm.tp1.supercars.logic.gameobjects.GameObjectContainer;
 import es.ucm.tp1.supercars.logic.gameobjects.Obstacle;
 import es.ucm.tp1.supercars.logic.gameobjects.ObstacleList;
 import es.ucm.tp1.supercars.logic.gameobjects.Player;
@@ -15,14 +17,13 @@ public class Game {
 	private Level level;
 	private Random rand;
 	private Player player;
-	private CoinList cList;
-	private ObstacleList oList;
+	//private CoinList cList;
+	//private ObstacleList oList;
+	private GameObjectContainer container;
 	private long seed;
 	private int cycles;
 	private GamePrinter printer;
 	private boolean testMode; //test modo
-	//private int x;
-	//private int y;
 	private long initialTime;
 	
 	
@@ -31,6 +32,7 @@ public class Game {
 	public Game (long seed, Level level, boolean testMode) {
 		  this.seed = seed;
 		  this.level = level;
+		  this.container = new GameObjectContainer();
 		  this.printer = new GamePrinter(this, level.getVisibility(), level.getWidth() );
 		  initGame();		
 	}
@@ -47,10 +49,7 @@ public class Game {
 		oList = new ObstacleList(level.getLenght() - level.getVisibility() /2);
 		
 		for(int i = (level.getVisibility() /2); i < level.getLenght(); i++){
-			//tryToAddObject(x, getRandomLine(), level.getObstacleFrequency());
-			
-			tryToAddObstacle(getRandomLine(), i, level.getObstacleFrequency());
-			tryToAddCoins(getRandomLine(), i, level.getCoinFrequency());
+			tryToAddObject(player.getX(), getRandomLine(), level.getObstacleFrequency());
 		}
 
 	}
@@ -108,20 +107,15 @@ public class Game {
 		return rand.nextDouble();
 	}
 	
-	/*private int getRoadWidth() {
 		
-		return level.getWidth();
-	}*/
-	
-	
 	//UPDATE 
 	public void update() {
 		//chequear si el player ha muerto aka se ha chocado pero en game rollo un if 
 	 player.update();
 	 this.updateClist();
 	 this.updateOlist();
-	 cList.removeDead();
-	 oList.removeDead();
+	 //cList.removeDead();
+	// oList.removeDead();
 	 this.cycles++;
 	 this.toString();
 	}
@@ -134,7 +128,7 @@ public class Game {
 		return empty;
 	}
 	
-	public void tryToAddObstacle(int x, int y, double frequency) {
+	/*public void tryToAddObstacle(int x, int y, double frequency) {
 		if	(getRandomNumber() < frequency){
 			
 			if(this.emptyPos(x, y)) {
@@ -150,7 +144,7 @@ public class Game {
 				cList.add(new Coin(x, y,1));
 			}
 		}
-	}
+	}*/
 	
 	public String getPositiontoString( int x, int y) {	//comprueba la pos del player y los objects y coins para printear
 		
@@ -197,6 +191,10 @@ public class Game {
 		return end;
 	}
 
+	public Collider getObjectInPosition(int x, int y ) {
+		return container.getObjectContainer(x, y);
+		
+	}
 	public Level getLevel() {
 		return level;
 	}
@@ -292,13 +290,13 @@ public class Game {
 		
 	}
 
-	public void tryToAddObject(Obstacle obstacle, double obstacleFrequency) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void tryToAddObject(Coin coin, double coinFrequency) {
-		// TODO Auto-generated method stub
+	public void tryToAddObject(GameObject gameO, double frequency) {
+		if	(getRandomNumber() < frequency){
+			
+			if(this.emptyPos(gameO.getX(), gameO.getY())) {
+				
+			}
+		}
 		
 	}
 

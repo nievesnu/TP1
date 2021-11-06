@@ -1,5 +1,6 @@
 package es.ucm.tp1.supercars.logic.gameobjects;
 
+import es.ucm.tp1.supercars.logic.Collider;
 import es.ucm.tp1.supercars.logic.Game;
 
 //Comportamiento: Avanza, va hacia arriba o va hacia abajo.
@@ -73,5 +74,13 @@ public class Player {
 
 	public void update() {
 		this.y++; //y++	
+	}
+	
+	public boolean doCollision() {
+		Collider other = game.getObjectInPosition(x, y);
+			if (other != null) {
+				return other.receiveCollision (this);
+			}
+		return false;
 	}
 }

@@ -1,8 +1,8 @@
 package es.ucm.tp1.supercars.control.commands;
 
 import es.ucm.tp1.supercars.logic.Game;
-import es.ucm.tp1.supercars.utils.StringUtils;
-import es.ucm.tp1.supercars.view.GamePrinter;
+//import es.ucm.tp1.supercars.utils.StringUtils;
+//import es.ucm.tp1.supercars.view.GamePrinter;
 
 public class InfoCommand extends Command {
 	private static final String NAME = "info";

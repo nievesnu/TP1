@@ -1,7 +1,6 @@
 package es.ucm.tp1.supercars.control.commands;
 
 import es.ucm.tp1.supercars.logic.Game;
-import es.ucm.tp1.supercars.utils.StringUtils;
 
 public class HelpCommand extends Command {
 	
