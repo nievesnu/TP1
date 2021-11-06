@@ -5,15 +5,17 @@ import es.ucm.tp1.supercars.logic.Game;
 
 public abstract class GameObject implements Collider {
 
-	protected int x, y;
-
+	protected int x;
+	protected int y;
+	protected int health;
+	protected String symbol;
 	protected Game game;
 
-	protected String symbol;
-
-	public GameObject(Game game, int x, int y) {
+	public GameObject(int x, int y, int health, String symbol, Game game){
 		this.x = x;
 		this.y = y;
+		this.health = health;
+		this.symbol = symbol;
 		this.game = game;
 	}
 
@@ -35,15 +37,17 @@ public abstract class GameObject implements Collider {
 	}
 
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 	public int getY() {
-		return y;
+		return this.y;
 	}
-
+	
 	public boolean isAlive() {
-		return true;
+		boolean yes = false;
+		if(health == 1) yes = true;
+			return yes;
 	}
 
 	public abstract void onEnter();

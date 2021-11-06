@@ -7,6 +7,8 @@ import es.ucm.tp1.supercars.logic.gameobjects.Obstacle;
 // TODO add your imports
 
 public class GameObjectGenerator {
+	
+	
 
 	public static void generateGameObjects(Game game, Level level) {
 
