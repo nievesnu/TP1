@@ -11,10 +11,10 @@ public abstract class GameObject implements Collider {
 	protected String symbol;
 	protected Game game;
 
-	public GameObject(int x, int y, int health, String symbol, Game game){
+	public GameObject(Game game, int x, int y){
 		this.x = x;
 		this.y = y;
-		this.health = health;
+		this.health = 1;
 		this.symbol = symbol;
 		this.game = game;
 	}
@@ -25,11 +25,11 @@ public abstract class GameObject implements Collider {
 
 	@Override
 	public String toString() {
-		if (isAlive()) {
-			return getSymbol();
-		}
-
-		return "";
+		String salida = "";
+			if(this.health > 0) {
+				salida = this.symbol;
+			}
+		return salida;		
 	}
 
 	public boolean isInPosition(int x, int y) {
@@ -46,7 +46,7 @@ public abstract class GameObject implements Collider {
 	
 	public boolean isAlive() {
 		boolean yes = false;
-		if(health == 1) yes = true;
+		if(health > 1) yes = true;
 			return yes;
 	}
 

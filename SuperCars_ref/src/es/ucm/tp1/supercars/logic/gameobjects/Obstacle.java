@@ -21,7 +21,7 @@ public class Obstacle {
 	}
 	
 	//para que desde Game se pueda ver cuantos objetos hay
-	static int getObstacleCounter() {
+	public static int getObstacleCounter() {
 		return obstacleCounter;
 	}
 	

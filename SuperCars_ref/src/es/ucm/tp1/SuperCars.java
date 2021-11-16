@@ -1,7 +1,7 @@
 package es.ucm.tp1;
 import java.util.Scanner;
 
-import es.ucm.tp1.control.Controller;
+import es.ucm.tp1.supercars.control.Controller;
 import es.ucm.tp1.supercars.control.Level;
 import es.ucm.tp1.supercars.logic.Game;
 
@@ -19,7 +19,7 @@ public class SuperCars {
 
 	private static final String SEED_INFO_MSG = "Random generator initialized with seed: ";
 	
-	private static boolean testMode = false;
+	//private static boolean testMode = false;
 	
 	private static void usage() {
 		System.out.println(USAGE_MSG);
@@ -49,11 +49,11 @@ public class SuperCars {
 					System.out.println("Level: " + level.name());
 					System.out.println(SEED_INFO_MSG + seed);
 
-					Game game = new Game(seed, level, testMode); 
+					Game game = new Game(seed, level); 
 					if( Level.TEST.equals(level))
 						game.toggleTest();
 					
-					Controller controller = new Controller(game, new Scanner(System.in), game.getPrinter());
+					Controller controller = new Controller(game, new Scanner(System.in));
 					controller.run();
 				} catch (NumberFormatException nfe) {
 					System.out.println(SEED_IS_NUMBER_MSNG);

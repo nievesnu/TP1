@@ -7,7 +7,7 @@ import es.ucm.tp1.supercars.logic.Game;
 //Velocidad: 1 casilla por turno.
 //Resistencia: Muere autom�ticamente con una colisi�n.
 
-public class Player {
+public class Player extends GameObject{
 	private boolean crashed;
 	private int coins;
 	private int x;
@@ -16,12 +16,12 @@ public class Player {
 	private static final String CAR_DEAD = "@"; //alive 
 	private Game game; 
 	
-	public Player (Game game, int x, int y, int coins) {
-		this.x = x;
-		this.y = y;
-		this.coins = coins;
+	public Player (Game game, int x, int y) {
+		super(game,x, y);
+		this.coins = 5;///luego cambiar a 0
 		this.crashed = false;
 		this.game = game;
+		this.symbol = CAR_ALIVE;
 	}
 	
 	public boolean isCrashed() {
@@ -82,5 +82,23 @@ public class Player {
 				return other.receiveCollision (this);
 			}
 		return false;
+	}
+
+	@Override
+	public boolean receiveCollision(Player player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onEnter() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDelete() {
+		// TODO Auto-generated method stub
+		
 	}
 }

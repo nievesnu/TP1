@@ -1,51 +1,57 @@
 package es.ucm.tp1.supercars.logic.gameobjects;
 
-public class Coin {
+import es.ucm.tp1.supercars.logic.Game;
+
+public class Coin extends GameObject{
 	
 	private static int  coinsCounter = 0;
-	private int x, y, vida;
-	private static final String SYMBOL = "Â¢";
+	private static final String SYMBOL = "¢";
 	public static final String INFO = null;
 	
-	public Coin(int x, int y, int vida) {
-		coinsCounter++;
-		this.x = x;
-		this.y = y;
-		this.vida = vida;  
-	
-	}
-	
-	public void receiveCollision() {
-		this.vida = 0;
-		coinsCounter--;
+	public Coin(Game game, int x, int y) {
+		super(game,x, y);
+		this.symbol = SYMBOL;
 	}
 	
 	public boolean isInPosition(int x, int y) {
 		return (this.x == x && this.y == y); 
 	}
 	
-	static int getcoinsCounter() {
-		return coinsCounter;
-	}
-	
 	public int getCoinVida() {
-		return this.vida;
+		return this.health;
 	}
-	
-	public String toString() {
-		String salida = "";
-		if(this.vida > 0) {
-			salida = SYMBOL;
-		}
-		return salida;
-	}	
 	
 	public void reset() {
 		coinsCounter = 0;
 	}
 
-	public static Object getCoinsCount() {
-		// TODO Auto-generated method stub
-		return null;
+	public static int getCoinsCount() {
+		return coinsCounter;
+	}
+
+	@Override
+	public boolean doCollision() {
+		return false;
+	}
+
+	@Override
+	public boolean receiveCollision(Player player) {
+		this.health = 0;
+		coinsCounter--;
+		return true; //impacta = true
+	}
+
+	@Override
+	public void onEnter() {
+		coinsCounter++;		
+	}
+
+	@Override
+	public void update() {		
+	}
+
+	@Override
+	public void onDelete() {
+		coinsCounter--;	
 	}
 }
