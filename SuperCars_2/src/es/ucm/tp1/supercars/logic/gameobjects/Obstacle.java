@@ -28,10 +28,6 @@ public class Obstacle extends GameObject{
 		this.health = 0;
 	}	
 	
-	//checkea si este obstaculo esta en la posicion que nos pasan por parametro
-	public boolean isInPosition(int x, int y) {
-		return (this.x == x && this.y == y); 	
-	}	
 	
 	//devuelve el symbolo de obstaculo solo si esta  vivo 
 	/*public String toString() {
@@ -83,6 +79,7 @@ public class Obstacle extends GameObject{
 
 	@Override
 	public boolean receiveShoot(Player player) {
-		return false;
+		this.health = 0;
+		return true;
 	}	
 }

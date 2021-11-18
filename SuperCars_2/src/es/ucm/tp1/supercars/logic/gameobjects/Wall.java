@@ -8,7 +8,6 @@ public class Wall extends GameObject{
 	
 	public Wall(Game game, int x, int y) {
 		super(game,x, y);
-		this.health = 3;
 	}
 
 	
@@ -29,7 +28,7 @@ public class Wall extends GameObject{
 	}
 	
 	public void reset() {
-		this.health = 3;
+		onEnter();
 	}
  
 	@Override
@@ -44,7 +43,8 @@ public class Wall extends GameObject{
 	}
 
 	@Override
-	public void onEnter() {			
+	public void onEnter() {	
+		this.health = 3;
 	}
 
 	@Override
@@ -53,15 +53,16 @@ public class Wall extends GameObject{
 
 	@Override
 	public void onDelete() {
-		
+		this.health = 0;
 	}
 	public void gotHit() {
 		health = health -1;
 	}
 
-
 	@Override
 	public boolean receiveShoot(Player player) {
+		this.health--;
+		if(this.health == 0) onDelete();
 		return true;
 	}
 }

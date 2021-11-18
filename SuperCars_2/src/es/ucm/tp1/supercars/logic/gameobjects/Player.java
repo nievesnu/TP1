@@ -30,8 +30,8 @@ public class Player extends GameObject{
 		this.crashed = true;
 	}
 	
-	public void sumar() {
-		this.coins++;
+	public void sumar(int c) {
+		this.coins+= c;
 	}
 
 	public int getX() {
@@ -53,10 +53,6 @@ public class Player extends GameObject{
 		}
 		return car;
 	}
-
-	public boolean isInPosition(int x , int y) {
-		return this.x == x && this.y == y;	
-	}
 	
 	public int getCoins(){
 		return coins;
@@ -71,7 +67,7 @@ public class Player extends GameObject{
 	}
 
 	public void update() {
-		this.y++; //y++	
+		this.y++;
 	}
 	
 	public boolean doCollision() {
@@ -84,20 +80,17 @@ public class Player extends GameObject{
 
 	@Override
 	public boolean receiveCollision(Player player) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void onEnter() {
-		// TODO Auto-generated method stub
-		
+		this.health = 1;
 	}
 
 	@Override
 	public void onDelete() {
-		// TODO Auto-generated method stub
-		
+		this.health = 0;
 	}
 
 	@Override

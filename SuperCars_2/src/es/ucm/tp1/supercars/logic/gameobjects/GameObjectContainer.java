@@ -15,6 +15,7 @@ public class GameObjectContainer {
 	
 	public void addObject(GameObject gameO) {
 		gameobjects.add(gameO);
+		gameO.onEnter();
 	}
 	
 	public void removeDead(){
@@ -23,8 +24,6 @@ public class GameObjectContainer {
 		for(int i = 0; i < gameobjects.size(); i++) {
 			if(gameobjects.get(i).isAlive()) {
 				list.add(gameobjects.get(i));
-			}else {
-				gameobjects.get(i).onDelete();
 			}
 		}
 		this.gameobjects = list;

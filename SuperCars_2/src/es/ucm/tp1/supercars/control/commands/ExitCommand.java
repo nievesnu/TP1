@@ -10,7 +10,7 @@ public class ExitCommand extends Command {
 
     @Override
     public boolean execute(Game game) {
-        game.setExit(true);
+        game.exit();
         return false;
     }
 

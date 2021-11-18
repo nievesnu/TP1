@@ -6,7 +6,7 @@ import java.util . Random;
 import es.ucm.tp1.supercars.control.Level;
 import es.ucm.tp1.supercars.logic.gameobjects.GameObject;
 import es.ucm.tp1.supercars.logic.gameobjects.Player;
-import es.ucm.tp1.supercars.logic.actions. InstantAction;
+import es.ucm.tp1.supercars.logic.actions.InstantAction;
 import es.ucm.tp1.supercars.logic.GameObjectContainer;
 import es.ucm.tp1.supercars.logic.GameObjectGenerator;
 
@@ -15,20 +15,18 @@ public class Game {
 	private Level level;
 	private Random rand;
 	private Player player;
-	//private CoinList cList;
-	//private ObstacleList oList;
 	private GameObjectContainer container;
 	private long seed;
 	private int cycles;
 	private boolean testMode; //test modo
 	private long initialTime;
-	
+	private boolean exit = false;	
 	
 	//instancias
 	public Game (long seed, Level level) {
 		  this.seed = seed;
 		  this.level = level;
-		  this.container = new GameObjectContainer();
+		 
 		  initGame();		
 	}
 	
@@ -39,21 +37,12 @@ public class Game {
 		rand = new Random(seed);
 		player = new Player(this, level.getWidth()/2, 0);
 		testMode = false;
-				
-		//cList = new CoinList(level.getLenght() - level.getVisibility() /2);
-		//oList = new ObstacleList(level.getLenght() - level.getVisibility() /2);
-		
-		for(int i = (level.getVisibility() /2); i < level.getLenght(); i++){
-			tryToAddObject(player.getX(), getRandomLane(), level.getObstacleFrequency());
-		}
+		this.container = new GameObjectContainer();
+		GameObjectGenerator.generateGameObjects(this, level);
 	}
 	
 	public boolean isFinished() {
-		boolean fin = false;
-		if(player.isCrashed() || player.getX() == level.getLenght()) { /*si el coche crashed aka dead || */
-			fin = true;
-		}
-		return fin;
+		return player.isCrashed() || this.isExit() || this.hasArrived();
 	}
 
 	//COMANDOS:
@@ -76,13 +65,6 @@ public class Game {
 		return ok;		
 	}
 	
-	/*public void updateClist() {
-		if (!cList.isPosEmpty(player.getX(), player.getY()) ) {
-			cList.CollideInPos(player.getX(), player.getY());
-			player.sumar();
-		}
-	}*/
-	
 	//RESET 
 	public void reset() {
 		initGame();
@@ -99,9 +81,6 @@ public class Game {
 	//UPDATE 
 	public void update() {
 	 player.update();
-	
-	//cList.removeDead();
-	//oList.removeDead();
 	 this.cycles++;
 	 this.toString();
 	}
@@ -114,16 +93,6 @@ public class Game {
 		return empty;
 	}
 	
-	/*	
-	public void tryToAddCoins(int x, int y, double frequency) {
-		if	(getRandomNumber() < frequency){
-			
-			if(this.emptyPos(x, y)) {
-				cList.add(new Coin(x, y,1));
-			}
-		}
-	}*/
-	
 	public String getPositiontoString(int x, int y) {	//comprueba la pos del player y los objects y coins para printear
 		
 		String str = " ";
@@ -134,7 +103,7 @@ public class Game {
 		}
 		return str;
 	}
-
+	
 	@Override
 	
 	public String getGameStatus() {
@@ -146,7 +115,7 @@ public class Game {
 		str.append("\nTotal Obstacles : " + Obstacle.getObstacleCounter());
 		str.append("\nTotal Coins : " + Coin.getCoinsCount());
 		if(!this.isTestMode()) {
-			str.append("\nEllapsed Time : " + ((System.currentTimeMillis() - initialTime)/1000)); 
+			str.append("\nEllapsed Time : " + this.elapsedTime()); 
 		}
 		return str.toString();
 	}
@@ -166,6 +135,11 @@ public class Game {
 	public GameObject getObjectInPosition(int x, int y ) {
 		return container.getObjectContainer(x, y);
 	}
+	
+	public void sumar(int coins) {
+		player.sumar(coins);
+	}
+	
 	public Level getLevel() {
 		return level;
 	}
@@ -187,7 +161,10 @@ public class Game {
 	}
 
 	public boolean isExit() {
-		return true;
+		return exit;
+	}
+	public void exit() {
+		exit = true;
 	}
 	
 	public boolean isTestMode() {
@@ -198,34 +175,33 @@ public class Game {
 		this.testMode = true;
 	}
 
-	public Object distanceToGoal() {
-		// TODO Auto-generated method stub
-		return null;
+	public int distanceToGoal() {
+		return level.getLenght() - player.getY();
 	}
 
-	public Object playerCoins() {
-		// TODO Auto-generated method stub
-		return null;
+	public int playerCoins() {
+		return player.getCoins();
 	}
 
 	public long elapsedTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		long e = (System.currentTimeMillis() - initialTime)/1000;
+		return e;
 	}
 
-	public int getRoadWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getRoadWidth() {		
+		return level.getWidth();
 	}
 
 	public int getVisibility() {
-		// TODO Auto-generated method stub
-		return 0;
+		return level.getVisibility();
+	}
+	
+	public int getRoadLength() {
+		return level.getLenght();
 	}
 
 	public boolean hasArrived() {
-		// TODO Auto-generated method stub
-		return false;
+		return distanceToGoal() == 0;
 	}
 
 	public boolean isNewRecord() {
@@ -233,18 +209,9 @@ public class Game {
 		return false;
 	}
 
-	public int getRoadLength() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public long getRecord() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	public void setExit(boolean b) {
-		b = isExit();	
 	}
 
 	public void tryToAddObject(GameObject gameO, double frequency) {

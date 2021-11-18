@@ -37,14 +37,13 @@ public class Pedestrian extends GameObject{
 
 	@Override
 	public void onDelete() {
-		// TODO Auto-generated method stub
-		
+		this.health = 0;
 	}
 
 	@Override
 	public boolean receiveShoot(Player player) {
-		this.health = 0;
-		
+		player.sumar(-player.getCoins());
+		onDelete();
 		return true;
 	}
 

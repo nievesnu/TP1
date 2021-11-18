@@ -11,10 +11,6 @@ public class Grenade extends GameObject{
 		super(game,x, y);
 		this.symbol = SYMBOL;
 	}
-
-	public boolean isInPosition(int x, int y) {
-		return (this.x == x && this.y == y); 
-	}
 	
 	@Override
 	public boolean doCollision() {

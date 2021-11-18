@@ -4,20 +4,19 @@ import es.ucm.tp1.supercars.logic.Game;
 
 public class SuperCoin extends GameObject{
 	
-	//private static int  coinsCounter = 0;
+	private static int  superValue = 1000;
 	private static final String SYMBOL = "$";
+	private static boolean hasIt = false;
 	public static final String INFO = null;
+	
 	
 	public SuperCoin(Game game, int x, int y) {
 		super(game, x, y);
-		this.symbol = SYMBOL;
-		
-	}
-	
+		this.symbol = SYMBOL;		
+	}	
 	
 	public static boolean hasSuperCoin() {
-		// TODO Auto-generated method stub
-		return false;
+		return hasIt;
 	}
 	
 	@Override
@@ -28,19 +27,18 @@ public class SuperCoin extends GameObject{
 	@Override
 	public boolean receiveCollision(Player player) {
 		this.health = 0;
-		//coinsCounter =+ 100;
+		player.sumar(1000);
 		return true; //impacta = true;
 	}
 	
 	@Override
 	public boolean receiveShoot(Player player) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public void onEnter() {
-	
+		hasIt = true;
 	}
 	
 	@Override
@@ -50,6 +48,6 @@ public class SuperCoin extends GameObject{
 	
 	@Override
 	public void onDelete() {
-		
+		hasIt = false;
 	}
 }

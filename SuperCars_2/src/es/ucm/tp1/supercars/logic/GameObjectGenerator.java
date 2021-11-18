@@ -10,8 +10,6 @@ import es.ucm.tp1.supercars.logic.gameobjects.Truck;
 import es.ucm.tp1.supercars.logic.gameobjects.Turbo;
 import es.ucm.tp1.supercars.logic.gameobjects.Wall;
 
-// TODO add your imports
-
 public class GameObjectGenerator {
 	
 	public static void generateGameObjects(Game game, Level level) {
@@ -34,10 +32,10 @@ public class GameObjectGenerator {
 		GameObject o = null;
 		switch (id) {
 		case 1:
-			o = new Wall(game, x, game.getRandomLane());
+			o = new Wall(game, game.getRandomLane(), x);
 			break;
 		case 2:
-			o = new Turbo(game, x, game.getRandomLane());
+			o = new Turbo(game, x, game.getRandomLane()); //cambiar randlane y x de sitio como en wall
 			break;
 		case 3:
 			o = new SuperCoin(game, x, game.getRandomLane());

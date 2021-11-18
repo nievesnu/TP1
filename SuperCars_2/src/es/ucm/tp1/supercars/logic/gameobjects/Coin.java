@@ -13,10 +13,6 @@ public class Coin extends GameObject{
 		this.symbol = SYMBOL;
 	}
 	
-	public boolean isInPosition(int x, int y) {
-		return (this.x == x && this.y == y); 
-	}
-	
 	public int getCoinVida() {
 		return this.health;
 	}
@@ -38,12 +34,13 @@ public class Coin extends GameObject{
 	public boolean receiveCollision(Player player) {
 		this.health = 0;
 		coinsCounter--;
+		player.sumar(1);
 		return true; //impacta = true
 	}
 
 	@Override
 	public void onEnter() {
-		coinsCounter++;		
+		coinsCounter++;
 	}
 
 	@Override

@@ -78,12 +78,6 @@ public abstract class Command {
 		return co;
 	}
 
-	public static void ClearConsoleScreen() {
-		System.out.print("Everything on the console will cleared");
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
-	}
-	
 	public static String commandHelp() {
 		String s = "";
 		for(int i  = 0; i < availableCommands.length; i++) 
