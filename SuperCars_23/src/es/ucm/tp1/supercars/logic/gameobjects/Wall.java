@@ -49,6 +49,10 @@ public class Wall extends GameObject{
 
 	@Override
 	public void update() {
+		gotHit();
+		if(this.health == 0){
+			onDelete();
+		}
 	}
 
 	@Override

@@ -1,5 +1,4 @@
 package es.ucm.tp1.supercars.logic.gameobjects;
-
 import es.ucm.tp1.supercars.logic.Game;
 
 public class SuperCoin extends GameObject{
@@ -8,7 +7,6 @@ public class SuperCoin extends GameObject{
 	private static final String SYMBOL = "$";
 	private static boolean hasIt = false;
 	public static final String INFO = "[SUPERCOIN] gives 1000 coins.\n";
-	
 	
 	public SuperCoin(Game game, int x, int y) {
 		super(game, x, y);
@@ -43,11 +41,9 @@ public class SuperCoin extends GameObject{
 	
 	@Override
 	public void update() {
-		
 	}
 	
 	@Override
 	public void onDelete() {
 		hasIt = false;
 	}
-}
